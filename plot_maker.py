@@ -18,6 +18,9 @@ def main():
     
     text = file.read().decode('utf-8')
 
+    # st.write(type(text))
+    # st.write(text)
+
     text = text.replace('-', '')
     text = text.replace('\n\n', '\n')
     text.strip('\n')
@@ -27,6 +30,8 @@ def main():
 
     for element in elements:
         index = element.split('\n')[0]
+        if index == '':
+            index = element.split('\n')[1]
         st.download_button(
                 label=f'Download {index}',
                 data=element,
