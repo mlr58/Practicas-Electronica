@@ -27,13 +27,12 @@ def main():
 
     for element in elements:
         index = element.split('\n')[0]
-        if index.strip() != '':
-            st.download_button(
-                    label=f'Download {index}',
-                    data=element,
-                    file_name=f'{index}.csv',
-                    mime='text/csv'
-                )
+        st.download_button(
+                label=f'Download {index}',
+                data=element,
+                file_name=f'{index}.csv',
+                mime='text/csv'
+            )
 
     
 
