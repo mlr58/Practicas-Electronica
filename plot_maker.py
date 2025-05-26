@@ -51,29 +51,31 @@ def main():
 
     st.title('Data Plotting App')
 
-    file = st.file_uploader('Data to plot', type='csv', key='uploader')
+    files = st.file_uploader('Data to plot', type='csv', key='uploader',
+                             accept_multiple_files=True)
 
     x_label = st.text_input('X Label', '')
     y_label = st.text_input('Y Label', '')
 
     try:
-        data = pd.read_csv(file, header=1)
+        for file in files:
+            data = pd.read_csv(file, header=1)
 
-        sns.set_style('darkgrid')
-        plt.plot(data[data.columns[0]], data[data.columns[1]])
+            sns.set_style('darkgrid')
+            plt.plot(data[data.columns[0]], data[data.columns[1]])
 
-        try:
-            if x_label == '':
-                plt.xlabel(data.columns[0])
-            else:
+            try:
+                if x_label == '':
+                    plt.xlabel(data.columns[0])
+                else:
+                    plt.xlabel(x_label)
+                if y_label == '':
+                    plt.ylabel(data.columns[1])
+                else:
+                    plt.ylabel(y_label)
+            except:
                 plt.xlabel(x_label)
-            if y_label == '':
-                plt.ylabel(data.columns[1])
-            else:
                 plt.ylabel(y_label)
-        except:
-            plt.xlabel(x_label)
-            plt.ylabel(y_label)
 
         st.pyplot(plt)
     except:
