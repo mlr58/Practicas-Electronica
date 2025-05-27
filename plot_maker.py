@@ -12,32 +12,30 @@ def main():
     st.set_page_config(layout='centered')
 
     st.title('Data Cleaning App')
-
-    file = st.file_uploader('Data to clean', type=['csv', 'txt'], key='file_uploader')
-
+    try:
+        file = st.file_uploader('Data to clean', type=['csv', 'txt'], key='file_uploader')
     
-    text = file.read().decode('utf-8')
+        text = file.read().decode('utf-8')
 
-    # st.write(type(text))
-    # st.write(text)
-
-    text = text.replace('-', '')
-    text = text.replace('\n\n', '\n')
-    text.strip('\n')
-    text.strip()
-    elements = text.split('\n\n ')
+        text = text.replace('--', '')
+        text = text.replace('\n\n', '\n')
+        text.strip('\n')
+        text.strip()
+        elements = text.split('\n\n ')
     
 
-    for element in elements:
-        index = element.split('\n')[0]
-        if index == '':
-            index = element.split('\n')[1]
-        st.download_button(
-                label=f'Download {index}',
-                data=element,
-                file_name=f'{index}.csv',
-                mime='text/csv'
-            )
+        for element in elements:
+            index = element.split('\n')[0]
+            if index == '':
+                index = element.split('\n')[1]
+            st.download_button(
+                    label=f'Download {index}',
+                    data=element,
+                    file_name=f'{index}.csv',
+                    mime='text/csv'
+                )
+    except:
+        pass
 
     
 
@@ -58,11 +56,12 @@ def main():
     y_label = st.text_input('Y Label', '')
 
     try:
-        for file in files:
+        for i, file in enumerate(files):
+            label = st.text_input(f'Label {i}', '')
             data = pd.read_csv(file, header=1)
 
             sns.set_style('darkgrid')
-            plt.plot(data[data.columns[0]], data[data.columns[1]])
+            plt.plot(data[data.columns[0]], data[data.columns[1]], label=label)
 
             try:
                 if x_label == '':
@@ -76,7 +75,7 @@ def main():
             except:
                 plt.xlabel(x_label)
                 plt.ylabel(y_label)
-
+        plt.legend()
         st.pyplot(plt)
     except:
         pass
